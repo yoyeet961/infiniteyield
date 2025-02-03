@@ -7993,6 +7993,9 @@ addcmd('view',{'spectate'},function(args, speaker)
 			viewChanged:Disconnect()
 		end
 		viewing = Players[v]
+		if workspace.StreamingEnabled then
+			game.Players.LocalPlayer:RequestStreamAroundAsync(getRoot(viewing.Character).CFrame)
+		end
 		workspace.CurrentCamera.CameraSubject = viewing.Character
 		notify('Spectate','Viewing ' .. Players[v].Name)
 		local function viewDiedFunc()
@@ -8357,10 +8360,16 @@ addcmd('copyfreecamposition',{'copyfcpos'},function(args, speaker)
 end)
 
 addcmd('gotocamera',{'gotocam','tocam'},function(args, speaker)
+    if workspace.StreamingEnabled then
+	    game.Players.LocalPlayer:RequestStreamAroundAsync(workspace.Camera.CFrame)
+	end
 	getRoot(speaker.Character).CFrame = workspace.Camera.CFrame
 end)
 
 addcmd('tweengotocamera',{'tweengotocam','tgotocam','ttocam'},function(args, speaker)
+	if workspace.StreamingEnabled then
+	    game.Players.LocalPlayer:RequestStreamAroundAsync(workspace.Camera.CFrame)
+	end
 	TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeed, Enum.EasingStyle.Linear), {CFrame = workspace.Camera.CFrame}):Play()
 end)
 
@@ -8782,6 +8791,9 @@ addcmd('goto',{'to'},function(args, speaker)
 				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
+			if workspace.StreamingEnabled then
+			    game.Players.LocalPlayer:RequestStreamAroundAsync(getRoot(Players[v].Character).CFrame)
+			end
 			getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)
 		end
 	end
@@ -8796,6 +8808,9 @@ addcmd('tweengoto',{'tgoto','tto','tweento'},function(args, speaker)
 				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
+			if workspace.StreamingEnabled then
+			    game.Players.LocalPlayer:RequestStreamAroundAsync(getRoot(Players[v].Character).CFrame)
+			end
 			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeed, Enum.EasingStyle.Linear), {CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)}):Play()
 		end
 	end
@@ -8808,6 +8823,9 @@ addcmd('vehiclegoto',{'vgoto','vtp','vehicletp'},function(args, speaker)
 		if Players[v].Character ~= nil then
 			local seat = speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart
 			local vehicleModel = seat:FindFirstAncestorWhichIsA("Model")
+			if workspace.StreamingEnabled then
+			    game.Players.LocalPlayer:RequestStreamAroundAsync(getRoot(Players[v].Character).CFrame)
+			end
 			vehicleModel:MoveTo(getRoot(Players[v].Character).Position)
 		end
 	end
@@ -8822,6 +8840,9 @@ addcmd('pulsetp',{'ptp'},function(args, speaker)
 			if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
+			end
+			if workspace.StreamingEnabled then
+			    game.Players.LocalPlayer:RequestStreamAroundAsync(getRoot(Players[v].Character).CFrame)
 			end
 			getRoot(speaker.Character).CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(3,1,0)
 			wait(seconds)
